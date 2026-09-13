@@ -1,0 +1,1191 @@
+<title>Grow Mate AI 診所預約</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{
+    --bg:#FFF7EE;
+    --bg-phone:#FFFDF9;
+    --surface:#FFFFFF;
+    --surface-alt:#FFF1E4;
+    --text:#3B2A1E;
+    --text-muted:#8A7561;
+    --text-faint:#B7A491;
+    --border:#EFE1D2;
+    --accent:#FF6F52;
+    --accent-strong:#E4552F;
+    --accent-soft:#FFE3D6;
+    --accent-ink:#FFFFFF;
+    --success:#5E9C5B;
+    --success-soft:#E4F0DF;
+    --closed:#A68F7C;
+    --closed-soft:#F1E9DE;
+    --shadow:rgba(59,42,30,0.10);
+    --shadow-strong:rgba(59,42,30,0.18);
+    --chip-bg:#FFFFFF;
+    --track-bg:#EFE1D2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1B130D;
+      --bg-phone:#221912;
+      --surface:#2C2118;
+      --surface-alt:#392A1E;
+      --text:#F5E9DB;
+      --text-muted:#BBA088;
+      --text-faint:#8A7360;
+      --border:#3F2E20;
+      --accent:#FF8567;
+      --accent-strong:#FFA085;
+      --accent-soft:#4A2E22;
+      --accent-ink:#241209;
+      --success:#8CCB87;
+      --success-soft:#28331F;
+      --closed:#C4AA8D;
+      --closed-soft:#382B1F;
+      --shadow:rgba(0,0,0,0.35);
+      --shadow-strong:rgba(0,0,0,0.5);
+      --chip-bg:#2C2118;
+      --track-bg:#3F2E20;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1B130D;
+    --bg-phone:#221912;
+    --surface:#2C2118;
+    --surface-alt:#392A1E;
+    --text:#F5E9DB;
+    --text-muted:#BBA088;
+    --text-faint:#8A7360;
+    --border:#3F2E20;
+    --accent:#FF8567;
+    --accent-strong:#FFA085;
+    --accent-soft:#4A2E22;
+    --accent-ink:#241209;
+    --success:#8CCB87;
+    --success-soft:#28331F;
+    --closed:#C4AA8D;
+    --closed-soft:#382B1F;
+    --shadow:rgba(0,0,0,0.35);
+    --shadow-strong:rgba(0,0,0,0.5);
+    --chip-bg:#2C2118;
+    --track-bg:#3F2E20;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
+    padding-block:40px;
+  }
+  .display{ font-family:'LXGW WenKai TC','Noto Sans TC',serif; }
+
+  .stage{
+    max-width:1080px;
+    margin:0 auto;
+    padding-inline:20px;
+    display:flex;
+    gap:48px;
+    align-items:flex-start;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  /* ---------- intro panel ---------- */
+  .intro{
+    flex:1 1 320px;
+    max-width:400px;
+    padding-top:28px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:24px;
+  }
+  .brand .mark{
+    flex:none;
+    width:40px; height:40px;
+    border-radius:12px;
+    background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px;
+  }
+  .brand .name{
+    font-family:'LXGW WenKai TC',serif;
+    font-size:24px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .intro .flow{
+    border-top:1px solid var(--border);
+    padding-top:20px;
+  }
+  .intro .flow h2{
+    font-size:13px;
+    letter-spacing:.06em;
+    color:var(--text-faint);
+    margin:0 0 14px;
+    font-weight:700;
+  }
+  .flow ol{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .flow li{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    font-size:14px;
+    color:var(--text);
+  }
+  .flow .n{
+    flex:none;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:var(--accent);
+    color:var(--accent-ink);
+    font-size:12px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-variant-numeric:tabular-nums;
+    margin-top:1px;
+  }
+  .flow b{ display:block; }
+  .flow small{ color:var(--text-muted); font-size:12.5px; }
+
+  /* ---------- phone ---------- */
+  .phone-wrap{
+    flex:none;
+    display:flex;
+    justify-content:center;
+  }
+  .phone{
+    width:380px;
+    max-width:88vw;
+    height:734px;
+    max-height:82vh;
+    background:var(--bg-phone);
+    border-radius:26px;
+    border:1px solid var(--border);
+    box-shadow:0 24px 50px var(--shadow-strong);
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .screens{
+    flex:1;
+    display:flex;
+    width:500%;
+    height:100%;
+    transition:transform .4s cubic-bezier(.65,0,.35,1);
+  }
+  .screen{
+    width:20%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .screen-head{
+    flex:none;
+    padding:22px 18px 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--bg-phone);
+  }
+  .screen-head h2{
+    font-family:'LXGW WenKai TC',serif;
+    font-size:19px;
+    margin:0;
+    flex:1;
+  }
+  .iconbtn{
+    flex:none;
+    width:32px; height:32px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text);
+    cursor:pointer;
+  }
+  .iconbtn:hover{ background:var(--accent-soft); border-color:var(--accent-soft); }
+  .iconbtn{ position:relative; }
+  .badge-dot{
+    position:absolute;
+    top:-5px; right:-5px;
+    min-width:16px; height:16px;
+    padding:0 3px;
+    border-radius:999px;
+    background:var(--accent);
+    color:var(--accent-ink);
+    font-size:10px;
+    font-weight:700;
+    line-height:16px;
+    text-align:center;
+    box-shadow:0 0 0 2px var(--bg-phone);
+  }
+  .iconbtn:focus-visible, .chip:focus-visible, .cta:focus-visible, .clinic-card:focus-visible, .slot:focus-visible, .daybtn:focus-visible{
+    outline:2px solid var(--accent-strong);
+    outline-offset:2px;
+  }
+  .scroll{
+    flex:1;
+    overflow-y:auto;
+    padding:0 18px 24px;
+  }
+
+  /* list screen */
+  .subhead{
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .chips{
+    position:relative;
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    padding-bottom:14px;
+    margin-bottom:6px;
+    cursor:grab;
+  }
+  .chips:active{ cursor:grabbing; }
+  .chips::-webkit-scrollbar{ display:none; }
+  .chips::after, .days::after{
+    content:"";
+    position:absolute;
+    top:0; right:0; bottom:14px;
+    width:30px;
+    background:linear-gradient(to right, transparent, var(--bg-phone));
+    pointer-events:none;
+  }
+  .chip{
+    flex:none;
+    font-size:13px;
+    font-weight:600;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:var(--chip-bg);
+    color:var(--text-muted);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .chip[aria-pressed="true"]{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:var(--accent-ink);
+  }
+  .clinic-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .clinic-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:14px;
+    display:flex;
+    gap:12px;
+    text-align:left;
+    cursor:pointer;
+    box-shadow:0 2px 8px var(--shadow);
+  }
+  .clinic-card:hover{ border-color:var(--accent); }
+  .cicon{
+    flex:none;
+    width:50px; height:50px;
+    border-radius:14px;
+    background:var(--accent-soft);
+    color:var(--accent-strong);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cbody{ flex:1; min-width:0; }
+  .crow1{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    margin-bottom:3px;
+  }
+  .cname{
+    font-family:'LXGW WenKai TC',serif;
+    font-size:15.5px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .cdist{
+    flex:none;
+    margin-left:auto;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--accent-strong);
+    font-variant-numeric:tabular-nums;
+  }
+  .ctags{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px; }
+  .tag{
+    font-size:11.5px;
+    padding:2px 8px;
+    border-radius:999px;
+    background:var(--surface-alt);
+    color:var(--text-muted);
+    font-weight:600;
+  }
+  .cmeta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:12px;
+    color:var(--text-muted);
+  }
+  .cmeta .star{ color:var(--accent-strong); }
+  .status-pill{
+    font-size:11.5px;
+    font-weight:700;
+    padding:2px 9px;
+    border-radius:999px;
+  }
+  .status-pill.open{ background:var(--success-soft); color:var(--success); }
+  .status-pill.closed{ background:var(--closed-soft); color:var(--closed); }
+
+  /* detail screen */
+  .detail-hero{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  .detail-hero .cicon{ width:64px; height:64px; border-radius:18px; }
+  .detail-hero h3{
+    font-family:'LXGW WenKai TC',serif;
+    font-size:19px;
+    margin:0 0 4px;
+    text-wrap:balance;
+  }
+  .info-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .info-row{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:13.5px;
+    padding:8px 0;
+    border-bottom:1px solid var(--border);
+    color:var(--text);
+  }
+  .info-row:last-child{ border-bottom:none; padding-bottom:0; }
+  .info-row:first-child{ padding-top:0; }
+  .info-row svg{ flex:none; margin-top:1px; color:var(--accent-strong); }
+  .info-row .lbl{ color:var(--text-muted); flex:none; width:64px; }
+  .hours-table{ width:100%; border-collapse:collapse; font-size:13px; }
+  .hours-table td{ padding:5px 0; }
+  .hours-table td:first-child{ color:var(--text-muted); width:56px; }
+  .hours-table tr.today td{ color:var(--accent-strong); font-weight:700; }
+  .hours-table td.off{ color:var(--text-faint); }
+
+  .cta{
+    display:block;
+    width:100%;
+    text-align:center;
+    padding:14px;
+    border-radius:14px;
+    border:none;
+    background:var(--accent);
+    color:var(--accent-ink);
+    font-family:'Noto Sans TC',sans-serif;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 8px 20px var(--shadow);
+  }
+  .cta:hover{ background:var(--accent-strong); }
+  .cta.ghost{
+    background:transparent;
+    border:1.5px solid var(--border);
+    color:var(--text);
+    box-shadow:none;
+  }
+  .cta.ghost:hover{ border-color:var(--accent); color:var(--accent-strong); }
+  .cta[disabled]{ opacity:.45; cursor:not-allowed; }
+  .sticky-cta{ flex:none; padding:14px 18px 20px; background:var(--bg-phone); }
+
+  /* booking screen */
+  .days{
+    position:relative;
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    padding-bottom:14px;
+    margin-bottom:6px;
+    cursor:grab;
+  }
+  .days:active{ cursor:grabbing; }
+  .days::-webkit-scrollbar{ display:none; }
+  .daybtn{
+    flex:none;
+    width:52px;
+    padding:9px 0;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+    cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+  }
+  .daybtn .dow{ font-size:11px; color:var(--text-muted); }
+  .daybtn .dom{ font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .daybtn[aria-pressed="true"]{ background:var(--accent); border-color:var(--accent); }
+  .daybtn[aria-pressed="true"] .dow, .daybtn[aria-pressed="true"] .dom{ color:var(--accent-ink); }
+
+  .section-label{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--text-muted);
+    letter-spacing:.04em;
+    margin:18px 0 10px;
+  }
+  .slot-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+  }
+  .slot{
+    padding:10px 0;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+    font-size:13.5px;
+    font-variant-numeric:tabular-nums;
+    cursor:pointer;
+  }
+  .slot[aria-pressed="true"]{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:700; }
+  .slot[disabled]{
+    background:var(--surface-alt);
+    color:var(--text-faint);
+    text-decoration:line-through;
+    cursor:not-allowed;
+    border-color:var(--border);
+  }
+  .empty-note{
+    font-size:13px;
+    color:var(--text-muted);
+    background:var(--surface-alt);
+    border-radius:12px;
+    padding:14px;
+    text-align:center;
+  }
+  .booking-summary{
+    margin-top:20px;
+    background:var(--accent-soft);
+    border-radius:14px;
+    padding:12px 14px;
+    font-size:13px;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .booking-summary b{ font-family:'LXGW WenKai TC',serif; }
+
+  /* confirm screen */
+  .confirm-wrap{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 24px;
+  }
+  .check-badge{
+    width:76px; height:76px;
+    border-radius:50%;
+    background:var(--success-soft);
+    color:var(--success);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:20px;
+    animation:pop .5s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes pop{ from{ transform:scale(.4); opacity:0; } to{ transform:scale(1); opacity:1; } }
+  .confirm-wrap h3{
+    font-family:'LXGW WenKai TC',serif;
+    font-size:21px;
+    margin:0 0 8px;
+  }
+  .confirm-wrap p.sub{
+    font-size:13.5px;
+    color:var(--text-muted);
+    margin:0 0 22px;
+  }
+  .confirm-card{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    text-align:left;
+    margin-bottom:22px;
+  }
+  .confirm-card .crow{
+    display:flex;
+    justify-content:space-between;
+    font-size:13.5px;
+    padding:7px 0;
+    border-bottom:1px dashed var(--border);
+  }
+  .confirm-card .crow:last-child{ border-bottom:none; }
+  .confirm-card .crow span:first-child{ color:var(--text-muted); }
+  .confirm-card .crow span:last-child{ font-weight:700; text-align:right; }
+  .confirm-actions{ width:100%; display:flex; flex-direction:column; gap:10px; }
+
+  /* my bookings screen */
+  .booking-list{ display:flex; flex-direction:column; gap:12px; }
+  .booking-item{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:14px;
+  }
+  .booking-item.cancelled{ opacity:.6; }
+  .bi-top{ display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; }
+  .bi-top .cicon{ width:42px; height:42px; border-radius:12px; }
+  .bi-top .bi-name{ font-family:'LXGW WenKai TC',serif; font-size:15px; font-weight:700; margin-bottom:2px; }
+  .bi-top .bi-spec{ font-size:12px; color:var(--text-muted); }
+  .bi-status{ margin-left:auto; font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px; flex:none; }
+  .bi-status.upcoming{ background:var(--success-soft); color:var(--success); }
+  .bi-status.cancelled{ background:var(--closed-soft); color:var(--closed); }
+  .bi-meta{ display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--text); margin-bottom:12px; }
+  .bi-meta span.muted{ color:var(--text-muted); }
+  .bi-actions{ display:flex; gap:8px; }
+  .bi-actions button{
+    flex:1;
+    padding:9px 0;
+    border-radius:11px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    border:1px solid var(--border);
+    background:var(--surface-alt);
+    color:var(--closed);
+  }
+  .bi-actions button.undo{ background:var(--accent-soft); color:var(--accent-strong); border-color:var(--accent-soft); }
+  .mybookings-empty{
+    text-align:center;
+    padding:48px 12px;
+    color:var(--text-muted);
+  }
+  .mybookings-empty svg{ color:var(--text-faint); margin-bottom:14px; }
+  .mybookings-empty p{ font-size:13.5px; margin:0 0 20px; }
+
+  @media (max-width:760px){
+    .stage{ flex-direction:column; align-items:center; }
+    .intro{ max-width:460px; padding-top:0; text-align:left; }
+    .phone{ height:660px; }
+  }
+</style>
+
+<svg style="display:none">
+  <symbol id="i-stetho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v6a4 4 0 0 0 8 0V3"/><path d="M9 15a6 6 0 0 0 6-6"/><circle cx="19" cy="16" r="3"/><path d="M15 15v1a4 4 0 0 0 4 4"/></symbol>
+  <symbol id="i-tooth" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4c-2 0-2.5 1-4 1S5 4 4 5c-1.2 1.2-1 3.5-.5 6 .4 2 1 3 1.3 5 .3 1.8.9 3 1.7 3 1 0 .8-2 1.3-4.5.3-1.6.8-2.5 2.2-2.5s1.9.9 2.2 2.5c.5 2.5.3 4.5 1.3 4.5.8 0 1.4-1.2 1.7-3 .3-2 .9-3 1.3-5 .5-2.5.7-4.8-.5-6-1-1-2.5 0-4-1Z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C9 4 4 9 4 17v3h3c8 0 13-5 13-16Z"/><path d="M7 20c2-6 5-9 12-12"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/><path d="M3 12h4l1.5-3L11 15l2-6 1.5 3H21"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6Z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.4 7-11.5A7 7 0 0 0 5 9.5C5 14.6 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.5 21 3 14.5 3 6a2 2 0 0 1 2-2Z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17l-6.1 3.5 1.5-6.8L2.2 9l6.9-.7Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 7"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
+</svg>
+
+<div class="stage">
+  <div class="intro">
+    <div class="brand"><span class="mark">🌱</span><span class="name">Grow Mate AI</span></div>
+    <div class="flow">
+      <h2>預約流程</h2>
+      <ol>
+        <li><span class="n">1</span><div><b>瀏覽診所列表</b><small>依模擬定位由近到遠排序，可依科別篩選</small></div></li>
+        <li><span class="n">2</span><div><b>查看診所詳情</b><small>看診科別、評價、完整營業時間</small></div></li>
+        <li><span class="n">3</span><div><b>選擇時段送出</b><small>挑日期、看即時可預約時段</small></div></li>
+        <li><span class="n">4</span><div><b>完成預約確認</b><small>診所端同步收到，取代電話掛號</small></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="screens" id="track">
+        <!-- 0: LIST -->
+        <div class="screen">
+          <div class="screen-head">
+            <h2>找診所</h2>
+            <button class="iconbtn" id="btn-my-bookings" aria-label="我的預約">
+              <svg width="18" height="18"><use href="#i-cal"/></svg>
+              <span class="badge-dot" id="mybookings-badge" hidden></span>
+            </button>
+          </div>
+          <div class="scroll">
+            <p class="subhead"><svg width="14" height="14"><use href="#i-pin"/></svg>依模擬定位，由近到遠推薦排序</p>
+            <div class="chips" id="chips" role="group" aria-label="依科別篩選"></div>
+            <div class="clinic-list" id="clinic-list"></div>
+          </div>
+        </div>
+
+        <!-- 1: DETAIL -->
+        <div class="screen">
+          <div class="screen-head">
+            <button class="iconbtn" data-nav="0" aria-label="返回列表"><svg width="18" height="18"><use href="#i-back"/></svg></button>
+            <h2>診所資訊</h2>
+          </div>
+          <div class="scroll" id="detail-body"></div>
+          <div class="sticky-cta">
+            <button class="cta" id="btn-to-booking">立即預約</button>
+          </div>
+        </div>
+
+        <!-- 2: BOOKING -->
+        <div class="screen">
+          <div class="screen-head">
+            <button class="iconbtn" data-nav="1" aria-label="返回診所資訊"><svg width="18" height="18"><use href="#i-back"/></svg></button>
+            <h2>選擇時段</h2>
+          </div>
+          <div class="scroll">
+            <p class="subhead" id="booking-clinic-name"></p>
+            <div class="section-label">選擇日期</div>
+            <div class="days" id="days"></div>
+            <div class="section-label">可預約時段</div>
+            <div id="slot-area"></div>
+            <div class="booking-summary" id="booking-summary" hidden>
+              <svg width="16" height="16"><use href="#i-cal"/></svg>
+              <span id="booking-summary-text"></span>
+            </div>
+          </div>
+          <div class="sticky-cta">
+            <button class="cta" id="btn-confirm" disabled>確認預約</button>
+          </div>
+        </div>
+
+        <!-- 3: CONFIRM -->
+        <div class="screen">
+          <div class="screen-head">
+            <h2>預約完成</h2>
+          </div>
+          <div class="confirm-wrap">
+            <div class="check-badge"><svg width="34" height="34"><use href="#i-check"/></svg></div>
+            <h3>預約成功！</h3>
+            <p class="sub">診所端已同步收到您的預約通知</p>
+            <div class="confirm-card" id="confirm-card"></div>
+            <div class="confirm-actions">
+              <button class="cta" id="btn-view-bookings">查看我的預約</button>
+              <button class="cta ghost" id="btn-add-cal">加入行事曆提醒</button>
+              <button class="cta ghost" data-nav="0" id="btn-done">返回診所列表</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4: MY BOOKINGS -->
+        <div class="screen">
+          <div class="screen-head">
+            <button class="iconbtn" data-nav="0" aria-label="返回列表"><svg width="18" height="18"><use href="#i-back"/></svg></button>
+            <h2>我的預約</h2>
+          </div>
+          <div class="scroll" id="mybookings-body"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SPECIALTIES = {
+    peds:   { label:"小兒科",     icon:"i-stetho" },
+    dent:   { label:"小兒牙科",   icon:"i-tooth"  },
+    eye:    { label:"小兒眼科",   icon:"i-eye"    },
+    derm:   { label:"小兒皮膚科", icon:"i-leaf"   },
+    rehab:  { label:"兒童復健科", icon:"i-pulse"  },
+    allergy:{ label:"過敏免疫科", icon:"i-shield" }
+  };
+
+  var DOW_KEYS = ["sun","mon","tue","wed","thu","fri","sat"];
+  var DOW_LABEL = ["日","一","二","三","四","五","六"];
+
+  function H(open, close){ return [open, close]; }
+
+  var CLINICS = [
+    {
+      id:"c1", name:"小樹苗小兒科診所", specs:["peds"], distanceKm:0.6,
+      rating:4.8, reviews:312, address:"忠孝東路三段 88 號 2 樓", phone:"02-2771-0000",
+      note:"專治嬰幼兒常見感冒、腸胃不適，附設兒童遊戲區。",
+      hours:{ mon:[H("09:00","12:00"),H("14:00","18:00")], tue:[H("09:00","12:00"),H("14:00","18:00")],
+        wed:[H("09:00","12:00"),H("14:00","18:00")], thu:[H("09:00","12:00"),H("14:00","18:00")],
+        fri:[H("09:00","12:00"),H("14:00","18:00")], sat:[H("09:00","12:00")], sun:null }
+    },
+    {
+      id:"c2", name:"陽光兒童牙醫診所", specs:["dent"], distanceKm:0.9,
+      rating:4.9, reviews:201, address:"敦化南路一段 12 號", phone:"02-2711-2222",
+      note:"兒童無痛塗氟、蛀牙預防，看診前提供繪本安撫。",
+      hours:{ mon:[H("10:00","13:00"),H("15:00","20:00")], tue:[H("10:00","13:00"),H("15:00","20:00")],
+        wed:[H("10:00","13:00"),H("15:00","20:00")], thu:[H("10:00","13:00"),H("15:00","20:00")],
+        fri:[H("10:00","13:00"),H("15:00","20:00")], sat:[H("10:00","13:00"),H("15:00","20:00")], sun:null }
+    },
+    {
+      id:"c3", name:"貝殼兒童眼科診所", specs:["eye"], distanceKm:1.4,
+      rating:4.7, reviews:154, address:"仁愛路四段 56 號 5 樓", phone:"02-2705-3333",
+      note:"兒童近視控制、弱視訓練，備有專用視力檢查儀器。",
+      hours:{ mon:[H("09:00","17:00")], tue:[H("09:00","17:00")], wed:[H("09:00","17:00")],
+        thu:[H("09:00","17:00")], fri:[H("09:00","17:00")], sat:[H("09:00","12:00")], sun:null }
+    },
+    {
+      id:"c4", name:"康乃馨小兒皮膚科", specs:["derm"], distanceKm:1.8,
+      rating:4.6, reviews:98, address:"信義路五段 21 號", phone:"02-2758-4444",
+      note:"異位性皮膚炎、濕疹、尿布疹專門門診。",
+      hours:{ mon:null, tue:[H("11:00","14:00"),H("15:00","19:00")], wed:[H("11:00","14:00"),H("15:00","19:00")],
+        thu:[H("11:00","14:00"),H("15:00","19:00")], fri:[H("11:00","14:00"),H("15:00","19:00")],
+        sat:[H("11:00","14:00"),H("15:00","19:00")], sun:null }
+    },
+    {
+      id:"c5", name:"小晴天兒童復健科診所", specs:["rehab"], distanceKm:2.3,
+      rating:4.9, reviews:276, address:"松山路 168 號 3 樓", phone:"02-2760-5555",
+      note:"早期療育評估、感覺統合訓練，一對一治療室。",
+      hours:{ mon:[H("08:00","12:00"),H("14:00","18:00")], tue:[H("08:00","12:00"),H("14:00","18:00")],
+        wed:[H("08:00","12:00"),H("14:00","18:00")], thu:[H("08:00","12:00"),H("14:00","18:00")],
+        fri:[H("08:00","12:00"),H("14:00","18:00")], sat:[H("08:00","12:00")], sun:null }
+    },
+    {
+      id:"c6", name:"安心兒科過敏免疫診所", specs:["peds","allergy"], distanceKm:2.6,
+      rating:4.8, reviews:189, address:"八德路四段 99 號", phone:"02-2570-6666",
+      note:"氣喘、異位性體質長期追蹤，提供夜間門診。",
+      hours:{ mon:[H("09:00","12:00"),H("14:00","18:00"),H("19:00","21:00")],
+        tue:[H("09:00","12:00"),H("14:00","18:00"),H("19:00","21:00")],
+        wed:[H("09:00","12:00"),H("14:00","18:00"),H("19:00","21:00")],
+        thu:[H("09:00","12:00"),H("14:00","18:00"),H("19:00","21:00")],
+        fri:[H("09:00","12:00"),H("14:00","18:00"),H("19:00","21:00")],
+        sat:[H("09:00","12:00")], sun:null }
+    },
+    {
+      id:"c7", name:"好日子小兒科診所", specs:["peds"], distanceKm:3.4,
+      rating:4.5, reviews:87, address:"民生東路三段 30 號", phone:"02-2712-7777",
+      note:"社區型家庭診所，看診步調從容不趕時間。",
+      hours:{ mon:[H("09:00","12:00"),H("14:00","17:00")], tue:[H("09:00","12:00")],
+        wed:[H("09:00","12:00"),H("14:00","17:00")], thu:[H("09:00","12:00")],
+        fri:[H("09:00","12:00"),H("14:00","17:00")], sat:[H("09:00","12:00")], sun:null }
+    },
+    {
+      id:"c8", name:"童心圓兒童牙醫診所", specs:["dent"], distanceKm:4.2,
+      rating:4.7, reviews:133, address:"南京東路五段 188 號", phone:"02-2748-8888",
+      note:"連鎖兒童牙科，全台據點可跨診所調閱病歷。",
+      hours:{ mon:[H("09:00","12:00"),H("14:00","18:00")], tue:[H("09:00","12:00"),H("14:00","18:00")],
+        wed:[H("09:00","12:00"),H("14:00","18:00")], thu:[H("09:00","12:00"),H("14:00","18:00")],
+        fri:[H("09:00","12:00"),H("14:00","18:00")], sat:[H("09:00","12:00"),H("14:00","18:00")],
+        sun:[H("09:00","12:00")] }
+    }
+  ];
+
+  var SCREEN_COUNT = 5;
+  var state = { screen:0, filter:"all", clinicId:null, dateIdx:0, slot:null, bookings:[] };
+  var bookingSeq = 1;
+
+  function icon(id, cls){ return '<svg class="'+(cls||'')+'" width="20" height="20"><use href="#'+id+'"/></svg>'; }
+
+  function timeToMin(t){ var p=t.split(":"); return (+p[0])*60 + (+p[1]); }
+
+  function isOpenNow(clinic, now){
+    var dow = DOW_KEYS[now.getDay()];
+    var ranges = clinic.hours[dow];
+    if(!ranges) return false;
+    var mins = now.getHours()*60 + now.getMinutes();
+    for(var i=0;i<ranges.length;i++){
+      if(mins >= timeToMin(ranges[i][0]) && mins < timeToMin(ranges[i][1])) return true;
+    }
+    return false;
+  }
+
+  function specTags(clinic){
+    return clinic.specs.map(function(k){ return SPECIALTIES[k].label; });
+  }
+
+  // ---- render: filter chips ----
+  function renderChips(){
+    var wrap = document.getElementById("chips");
+    var items = [["all","全部"]];
+    Object.keys(SPECIALTIES).forEach(function(k){ items.push([k, SPECIALTIES[k].label]); });
+    wrap.innerHTML = items.map(function(it){
+      var pressed = state.filter === it[0];
+      return '<button class="chip" data-filter="'+it[0]+'" aria-pressed="'+pressed+'">'+it[1]+'</button>';
+    }).join("");
+    wrap.querySelectorAll(".chip").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        state.filter = btn.getAttribute("data-filter");
+        renderChips();
+        renderList();
+      });
+    });
+  }
+
+  // ---- render: clinic list ----
+  function renderList(){
+    var now = new Date();
+    var list = CLINICS.filter(function(c){
+      return state.filter === "all" || c.specs.indexOf(state.filter) !== -1;
+    }).slice().sort(function(a,b){ return a.distanceKm - b.distanceKm; });
+
+    var html = list.map(function(c){
+      var open = isOpenNow(c, now);
+      var tagsHtml = specTags(c).map(function(t){ return '<span class="tag">'+t+'</span>'; }).join("");
+      return (
+        '<button class="clinic-card" data-clinic="'+c.id+'">' +
+          '<div class="cicon">'+icon(SPECIALTIES[c.specs[0]].icon)+'</div>' +
+          '<div class="cbody">' +
+            '<div class="crow1"><span class="cname">'+c.name+'</span><span class="cdist">'+c.distanceKm.toFixed(1)+' km</span></div>' +
+            '<div class="ctags">'+tagsHtml+'</div>' +
+            '<div class="cmeta">' +
+              '<span class="star">'+icon("i-star")+'</span><span>'+c.rating+'（'+c.reviews+'）</span>' +
+              '<span class="status-pill '+(open?'open':'closed')+'">'+(open?'營業中':'休息中')+'</span>' +
+            '</div>' +
+          '</div>' +
+        '</button>'
+      );
+    }).join("");
+
+    document.getElementById("clinic-list").innerHTML = html || '<p class="empty-note">目前篩選條件下沒有找到合作診所</p>';
+    document.querySelectorAll("[data-clinic]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        state.clinicId = btn.getAttribute("data-clinic");
+        state.dateIdx = 0; state.slot = null;
+        renderDetail();
+        goTo(1);
+      });
+    });
+  }
+
+  function findClinic(){ return CLINICS.filter(function(c){ return c.id === state.clinicId; })[0]; }
+
+  // ---- render: detail ----
+  function renderDetail(){
+    var c = findClinic();
+    if(!c) return;
+    var now = new Date();
+    var open = isOpenNow(c, now);
+    var todayKey = DOW_KEYS[now.getDay()];
+
+    var order = ["mon","tue","wed","thu","fri","sat","sun"];
+    var wd = {mon:"一",tue:"二",wed:"三",thu:"四",fri:"五",sat:"六",sun:"日"};
+    var rows = order.map(function(k){
+      var ranges = c.hours[k];
+      var text = ranges ? ranges.map(function(r){ return r[0]+"–"+r[1]; }).join("、") : "休診";
+      var cls = (k===todayKey) ? "today" : "";
+      var offCls = ranges ? "" : "off";
+      return '<tr class="'+cls+'"><td>週'+wd[k]+'</td><td class="'+offCls+'">'+text+'</td></tr>';
+    }).join("");
+
+    var tagsHtml = specTags(c).map(function(t){ return '<span class="tag">'+t+'</span>'; }).join("");
+
+    document.getElementById("detail-body").innerHTML =
+      '<div class="detail-hero">' +
+        '<div class="cicon">'+icon(SPECIALTIES[c.specs[0]].icon)+'</div>' +
+        '<div>' +
+          '<h3 class="display">'+c.name+'</h3>' +
+          '<div class="ctags">'+tagsHtml+'</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="info-card">' +
+        '<div class="info-row">'+icon("i-star")+'<span>'+c.rating+' 分（'+c.reviews+' 則評價） · <span class="status-pill '+(open?'open':'closed')+'">'+(open?'營業中':'休息中')+'</span></span></div>' +
+        '<div class="info-row">'+icon("i-pin")+'<span>'+c.address+'</span></div>' +
+        '<div class="info-row">'+icon("i-phone")+'<span>'+c.phone+'</span></div>' +
+        '<div class="info-row">'+icon("i-pin")+'<span class="lbl" style="width:auto;color:var(--text-muted)">距離約 <b style="color:var(--accent-strong)">'+c.distanceKm.toFixed(1)+' 公里</b>（依模擬定位計算）</span></div>' +
+      '</div>' +
+      '<div class="section-label">診所簡介</div>' +
+      '<div class="info-card"><p style="margin:0;font-size:13.5px;line-height:1.7;color:var(--text)">'+c.note+'</p></div>' +
+      '<div class="section-label">營業時間</div>' +
+      '<div class="info-card"><table class="hours-table">'+rows+'</table></div>';
+  }
+
+  // ---- booking screen ----
+  function nextDays(n){
+    var out = [];
+    var base = new Date();
+    for(var i=0;i<n;i++){
+      var d = new Date(base.getFullYear(), base.getMonth(), base.getDate()+i);
+      out.push(d);
+    }
+    return out;
+  }
+
+  function dayLabel(d, idx){
+    if(idx===0) return "今天";
+    if(idx===1) return "明天";
+    return "週"+["日","一","二","三","四","五","六"][d.getDay()];
+  }
+
+  // deterministic pseudo-random slot availability
+  function hashSlotTaken(clinicId, dateKey, slotLabel){
+    var s = clinicId+"|"+dateKey+"|"+slotLabel;
+    var h = 0;
+    for(var i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) >>> 0; }
+    return (h % 5) === 0; // ~20% of slots pre-booked
+  }
+
+  function slotsForDate(clinic, date){
+    var dow = DOW_KEYS[date.getDay()];
+    var ranges = clinic.hours[dow];
+    if(!ranges) return [];
+    var slots = [];
+    ranges.forEach(function(r){
+      var start = timeToMin(r[0]), end = timeToMin(r[1]);
+      for(var m=start; m+30<=end; m+=30){
+        var hh = Math.floor(m/60), mm = m%60;
+        var label = (hh<10?"0":"")+hh+":"+(mm===0?"00":mm);
+        slots.push(label);
+      }
+    });
+    return slots;
+  }
+
+  function dateKey(d){ return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+
+  var DAYS = nextDays(7);
+
+  function renderBooking(){
+    var c = findClinic();
+    if(!c) return;
+    document.getElementById("booking-clinic-name").innerHTML =
+      icon(SPECIALTIES[c.specs[0]].icon,'') + ' <span style="margin-left:4px">'+c.name+'</span>';
+
+    var daysHtml = DAYS.map(function(d, idx){
+      var pressed = idx === state.dateIdx;
+      return '<button class="daybtn" data-day="'+idx+'" aria-pressed="'+pressed+'">' +
+        '<span class="dow">'+dayLabel(d, idx)+'</span><span class="dom">'+d.getDate()+'</span></button>';
+    }).join("");
+    document.getElementById("days").innerHTML = daysHtml;
+    document.querySelectorAll("[data-day]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        state.dateIdx = +btn.getAttribute("data-day");
+        state.slot = null;
+        renderBooking();
+      });
+    });
+
+    var d = DAYS[state.dateIdx];
+    var slots = slotsForDate(c, d);
+    var dk = dateKey(d);
+    var slotArea = document.getElementById("slot-area");
+    if(slots.length === 0){
+      slotArea.innerHTML = '<p class="empty-note">'+c.name+' 這天休診，請選擇其他日期</p>';
+    } else {
+      slotArea.innerHTML = '<div class="slot-grid">' + slots.map(function(s){
+        var taken = hashSlotTaken(c.id, dk, s);
+        var selected = (state.slot === s);
+        return '<button class="slot" data-slot="'+s+'" aria-pressed="'+selected+'" '+(taken?'disabled':'')+'>'+s+'</button>';
+      }).join("") + '</div>';
+      slotArea.querySelectorAll("[data-slot]").forEach(function(btn){
+        btn.addEventListener("click", function(){
+          state.slot = btn.getAttribute("data-slot");
+          renderBooking();
+        });
+      });
+    }
+
+    var summary = document.getElementById("booking-summary");
+    var confirmBtn = document.getElementById("btn-confirm");
+    if(state.slot){
+      summary.hidden = false;
+      document.getElementById("booking-summary-text").innerHTML =
+        '將預約 <b>'+dayLabel(d,state.dateIdx)+' '+(d.getMonth()+1)+'/'+d.getDate()+'</b> <b>'+state.slot+'</b>';
+      confirmBtn.disabled = false;
+    } else {
+      summary.hidden = true;
+      confirmBtn.disabled = true;
+    }
+  }
+
+  function renderConfirm(){
+    var c = findClinic();
+    var d = DAYS[state.dateIdx];
+    document.getElementById("confirm-card").innerHTML =
+      '<div class="crow"><span>診所</span><span>'+c.name+'</span></div>' +
+      '<div class="crow"><span>科別</span><span>'+specTags(c).join("、")+'</span></div>' +
+      '<div class="crow"><span>日期</span><span>'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+dayLabel(d,state.dateIdx)+'）</span></div>' +
+      '<div class="crow"><span>時段</span><span>'+state.slot+'</span></div>' +
+      '<div class="crow"><span>地址</span><span>'+c.address+'</span></div>';
+  }
+
+  // ---- my bookings ----
+  function addBooking(){
+    var c = findClinic();
+    var d = DAYS[state.dateIdx];
+    state.bookings.unshift({
+      id: "b" + (bookingSeq++),
+      clinicName: c.name,
+      specs: specTags(c).join("、"),
+      iconKey: SPECIALTIES[c.specs[0]].icon,
+      dateText: (d.getMonth()+1)+"月"+d.getDate()+"日（"+dayLabel(d,state.dateIdx)+"）",
+      slot: state.slot,
+      address: c.address,
+      status: "upcoming"
+    });
+    updateBookingBadge();
+  }
+
+  function updateBookingBadge(){
+    var badge = document.getElementById("mybookings-badge");
+    var count = state.bookings.filter(function(b){ return b.status === "upcoming"; }).length;
+    if(count > 0){ badge.hidden = false; badge.textContent = count; }
+    else { badge.hidden = true; }
+  }
+
+  function renderMyBookings(){
+    var body = document.getElementById("mybookings-body");
+    if(state.bookings.length === 0){
+      body.innerHTML =
+        '<div class="mybookings-empty">' +
+          icon("i-cal") +
+          '<p>目前沒有任何預約紀錄</p>' +
+          '<button class="cta" data-nav="0">去找診所預約</button>' +
+        '</div>';
+      return;
+    }
+    body.innerHTML = '<div class="booking-list">' + state.bookings.map(function(b){
+      var cancelled = b.status === "cancelled";
+      return (
+        '<div class="booking-item '+(cancelled?'cancelled':'')+'" data-booking="'+b.id+'">' +
+          '<div class="bi-top">' +
+            '<div class="cicon">'+icon(b.iconKey)+'</div>' +
+            '<div>' +
+              '<div class="bi-name">'+b.clinicName+'</div>' +
+              '<div class="bi-spec">'+b.specs+'</div>' +
+            '</div>' +
+            '<span class="bi-status '+(cancelled?'cancelled':'upcoming')+'">'+(cancelled?'已取消':'即將到來')+'</span>' +
+          '</div>' +
+          '<div class="bi-meta">' +
+            '<span>'+icon("i-cal")+' '+b.dateText+' '+b.slot+'</span>' +
+            '<span class="muted">'+icon("i-pin")+' '+b.address+'</span>' +
+          '</div>' +
+          '<div class="bi-actions">' +
+            (cancelled
+              ? '<button class="undo" data-action="undo">復原預約</button>'
+              : '<button data-action="cancel">取消預約</button>') +
+          '</div>' +
+        '</div>'
+      );
+    }).join("") + '</div>';
+  }
+
+  document.getElementById("mybookings-body").addEventListener("click", function(e){
+    var btn = e.target.closest("[data-action]");
+    if(!btn) return;
+    var item = e.target.closest("[data-booking]");
+    var id = item.getAttribute("data-booking");
+    var b = state.bookings.filter(function(x){ return x.id === id; })[0];
+    if(!b) return;
+    b.status = (btn.getAttribute("data-action") === "cancel") ? "cancelled" : "upcoming";
+    renderMyBookings();
+    updateBookingBadge();
+  });
+
+  // ---- horizontal drag-to-scroll (mouse) for chip / date rows ----
+  function enableDragScroll(el){
+    if(!el) return;
+    var down = false, startX = 0, startScroll = 0, moved = false;
+    el.addEventListener("pointerdown", function(e){
+      if(e.pointerType !== "mouse") return;
+      down = true; moved = false;
+      startX = e.clientX; startScroll = el.scrollLeft;
+    });
+    el.addEventListener("pointermove", function(e){
+      if(!down) return;
+      var dx = e.clientX - startX;
+      if(Math.abs(dx) > 3) moved = true;
+      el.scrollLeft = startScroll - dx;
+    });
+    function stop(){ down = false; }
+    el.addEventListener("pointerup", stop);
+    el.addEventListener("pointerleave", stop);
+    el.addEventListener("click", function(e){
+      if(moved){ e.stopPropagation(); e.preventDefault(); moved = false; }
+    }, true);
+    el.addEventListener("wheel", function(e){
+      if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+        el.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    }, { passive:false });
+  }
+
+  // ---- nav ----
+  function goTo(idx){
+    state.screen = idx;
+    document.getElementById("track").style.transform = "translateX(-"+(idx*(100/SCREEN_COUNT))+"%)";
+  }
+
+  document.addEventListener("click", function(e){
+    var navBtn = e.target.closest("[data-nav]");
+    if(navBtn){ goTo(+navBtn.getAttribute("data-nav")); }
+  });
+
+  document.getElementById("btn-to-booking").addEventListener("click", function(){
+    renderBooking();
+    goTo(2);
+  });
+  document.getElementById("btn-confirm").addEventListener("click", function(){
+    if(!state.slot) return;
+    renderConfirm();
+    addBooking();
+    goTo(3);
+  });
+  document.getElementById("btn-add-cal").addEventListener("click", function(){
+    var btn = document.getElementById("btn-add-cal");
+    btn.textContent = "已加入行事曆 ✓";
+    setTimeout(function(){ btn.textContent = "加入行事曆提醒"; }, 2200);
+  });
+  document.getElementById("btn-view-bookings").addEventListener("click", function(){
+    renderMyBookings();
+    goTo(4);
+  });
+  document.getElementById("btn-done").addEventListener("click", function(){
+    state.clinicId = null; state.slot = null; state.dateIdx = 0;
+    renderChips(); renderList();
+  });
+  document.getElementById("btn-my-bookings").addEventListener("click", function(){
+    renderMyBookings();
+    goTo(4);
+  });
+
+  // init
+  renderChips();
+  renderList();
+  enableDragScroll(document.getElementById("chips"));
+  enableDragScroll(document.getElementById("days"));
+  updateBookingBadge();
+})();
+</script>
