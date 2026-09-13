@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap">
 <style>
   :root{
+    color-scheme: light;
     --bg:#FFF7EE;
     --bg-phone:#FFFDF9;
     --surface:#FFFFFF;
@@ -24,52 +25,8 @@
     --chip-bg:#FFFFFF;
     --track-bg:#EFE1D2;
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#1B130D;
-      --bg-phone:#221912;
-      --surface:#2C2118;
-      --surface-alt:#392A1E;
-      --text:#F5E9DB;
-      --text-muted:#BBA088;
-      --text-faint:#8A7360;
-      --border:#3F2E20;
-      --accent:#FF8567;
-      --accent-strong:#FFA085;
-      --accent-soft:#4A2E22;
-      --accent-ink:#241209;
-      --success:#8CCB87;
-      --success-soft:#28331F;
-      --closed:#C4AA8D;
-      --closed-soft:#382B1F;
-      --shadow:rgba(0,0,0,0.35);
-      --shadow-strong:rgba(0,0,0,0.5);
-      --chip-bg:#2C2118;
-      --track-bg:#3F2E20;
-    }
-  }
-  :root[data-theme="dark"]{
-    --bg:#1B130D;
-    --bg-phone:#221912;
-    --surface:#2C2118;
-    --surface-alt:#392A1E;
-    --text:#F5E9DB;
-    --text-muted:#BBA088;
-    --text-faint:#8A7360;
-    --border:#3F2E20;
-    --accent:#FF8567;
-    --accent-strong:#FFA085;
-    --accent-soft:#4A2E22;
-    --accent-ink:#241209;
-    --success:#8CCB87;
-    --success-soft:#28331F;
-    --closed:#C4AA8D;
-    --closed-soft:#382B1F;
-    --shadow:rgba(0,0,0,0.35);
-    --shadow-strong:rgba(0,0,0,0.5);
-    --chip-bg:#2C2118;
-    --track-bg:#3F2E20;
-  }
+  /* Locked to the light (cream) palette regardless of the visitor's system
+     dark/light setting, so the demo looks identical for every tester. */
 
   *{box-sizing:border-box;}
   body{
