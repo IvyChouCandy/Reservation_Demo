@@ -43,23 +43,51 @@
     margin:0 auto;
     padding-inline:20px;
     display:flex;
-    gap:48px;
-    align-items:flex-start;
     justify-content:center;
-    flex-wrap:wrap;
   }
 
-  /* ---------- intro panel ---------- */
-  .intro{
-    flex:1 1 320px;
-    max-width:400px;
-    padding-top:28px;
+  /* ---------- intro modal ---------- */
+  .intro-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(27,19,13,0.5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    -webkit-backdrop-filter:blur(2px);
+    backdrop-filter:blur(2px);
   }
+  .intro-backdrop[hidden]{ display:none; }
+  .intro-modal{
+    position:relative;
+    width:100%;
+    max-width:380px;
+    max-height:88vh;
+    overflow-y:auto;
+    background:var(--surface);
+    border-radius:22px;
+    padding:28px 24px 24px;
+    box-shadow:0 30px 60px var(--shadow-strong);
+  }
+  .intro-close{
+    position:absolute;
+    top:14px; right:14px;
+    width:30px; height:30px;
+    border-radius:9px;
+    border:1px solid var(--border);
+    background:var(--bg-phone);
+    color:var(--text-muted);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .intro-close:hover{ background:var(--accent-soft); color:var(--accent-strong); border-color:var(--accent-soft); }
   .brand{
     display:flex;
     align-items:center;
     gap:10px;
-    margin-bottom:24px;
+    margin-bottom:22px;
   }
   .brand .mark{
     flex:none;
@@ -71,15 +99,16 @@
   }
   .brand .name{
     font-family:'LXGW WenKai TC',serif;
-    font-size:24px;
+    font-size:22px;
     font-weight:700;
     color:var(--text);
   }
-  .intro .flow{
+  .intro-modal .flow{
     border-top:1px solid var(--border);
-    padding-top:20px;
+    padding-top:18px;
+    margin-bottom:24px;
   }
-  .intro .flow h2{
+  .intro-modal .flow h2{
     font-size:13px;
     letter-spacing:.06em;
     color:var(--text-faint);
@@ -563,8 +592,7 @@
   /* ---------- mobile: the "phone" becomes the whole screen ---------- */
   @media (max-width:760px){
     body{ padding-block:0; }
-    .stage{ padding-inline:0; gap:0; min-height:100dvh; }
-    .intro{ display:none; }
+    .stage{ padding-inline:0; min-height:100dvh; }
     .phone-wrap{ width:100%; }
     .phone{
       width:100%;
@@ -594,8 +622,11 @@
   <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
 </svg>
 
-<div class="stage">
-  <div class="intro">
+<div class="intro-backdrop" id="introBackdrop">
+  <div class="intro-modal" role="dialog" aria-modal="true" aria-label="Grow Mate AI 預約流程說明">
+    <button class="intro-close" id="introClose" aria-label="關閉說明">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
     <div class="brand"><span class="mark">🌱</span><span class="name">Grow Mate AI</span></div>
     <div class="flow">
       <h2>預約流程</h2>
@@ -606,8 +637,11 @@
         <li><span class="n">4</span><div><b>完成預約確認</b><small>診所端同步收到，取代電話掛號</small></div></li>
       </ol>
     </div>
+    <button class="cta" id="introStart">開始使用</button>
   </div>
+</div>
 
+<div class="stage">
   <div class="phone-wrap">
     <div class="phone">
       <div class="screens" id="track">
@@ -1147,6 +1181,18 @@
   document.getElementById("btn-my-bookings").addEventListener("click", function(){
     renderMyBookings();
     goTo(4);
+  });
+
+  // ---- intro modal ----
+  var introBackdrop = document.getElementById("introBackdrop");
+  function closeIntro(){ introBackdrop.hidden = true; }
+  document.getElementById("introClose").addEventListener("click", closeIntro);
+  document.getElementById("introStart").addEventListener("click", closeIntro);
+  introBackdrop.addEventListener("click", function(e){
+    if(e.target === introBackdrop) closeIntro();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && !introBackdrop.hidden) closeIntro();
   });
 
   // init
