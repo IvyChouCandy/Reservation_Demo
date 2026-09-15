@@ -404,6 +404,52 @@
   .hours-table tr.today td{ color:var(--accent-strong); font-weight:700; }
   .hours-table td.off{ color:var(--text-faint); }
 
+  /* doctor selector */
+  .doctor-list{ display:flex; flex-direction:column; gap:10px; margin-bottom:4px; }
+  .doctor-card{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    width:100%;
+    background:var(--surface);
+    border:1.5px solid var(--border);
+    border-radius:14px;
+    padding:12px 14px;
+    text-align:left;
+    cursor:pointer;
+  }
+  .doctor-card[aria-pressed="true"]{ border-color:var(--accent); background:var(--accent-soft); }
+  .doctor-avatar{
+    flex:none;
+    width:38px; height:38px;
+    border-radius:50%;
+    background:var(--surface-alt);
+    color:var(--accent-strong);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'LXGW WenKai TC',serif;
+    font-weight:700;
+    font-size:15px;
+  }
+  .doctor-card[aria-pressed="true"] .doctor-avatar{ background:var(--accent); color:var(--accent-ink); }
+  .doctor-info{ flex:1; min-width:0; }
+  .doctor-info b{ display:block; font-size:14px; margin-bottom:3px; }
+  .doctor-info .doctor-bio{ display:block; font-size:12px; color:var(--text-muted); line-height:1.5; }
+  .doctor-radio{
+    flex:none;
+    width:18px; height:18px;
+    margin-top:2px;
+    border-radius:50%;
+    border:1.5px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .doctor-card[aria-pressed="true"] .doctor-radio{ border-color:var(--accent); }
+  .doctor-card[aria-pressed="true"] .doctor-radio::after{
+    content:"";
+    width:9px; height:9px;
+    border-radius:50%;
+    background:var(--accent);
+  }
+
   .cta{
     display:block;
     width:100%;
@@ -763,6 +809,10 @@
       id:"c1", name:"小樹苗小兒科診所", specs:["peds"], distanceKm:0.6,
       rating:4.8, reviews:312, address:"忠孝東路三段 88 號 2 樓", phone:"02-2771-0000",
       note:"專治嬰幼兒常見感冒、腸胃不適，附設兒童遊戲區。",
+      doctors:[
+        { id:"d1a", name:"陳雅婷", title:"醫師", bio:"專長：新生兒照護與生長發育評估" },
+        { id:"d1b", name:"林柏宇", title:"醫師", bio:"專長：兒童感染症與疫苗接種諮詢" }
+      ],
       hours:{ mon:[H("09:00","12:00"),H("14:00","18:00")], tue:[H("09:00","12:00"),H("14:00","18:00")],
         wed:[H("09:00","12:00"),H("14:00","18:00")], thu:[H("09:00","12:00"),H("14:00","18:00")],
         fri:[H("09:00","12:00"),H("14:00","18:00")], sat:[H("09:00","12:00")], sun:null }
@@ -771,6 +821,10 @@
       id:"c2", name:"陽光兒童牙醫診所", specs:["dent"], distanceKm:0.9,
       rating:4.9, reviews:201, address:"敦化南路一段 12 號", phone:"02-2711-2222",
       note:"兒童無痛塗氟、蛀牙預防，看診前提供繪本安撫。",
+      doctors:[
+        { id:"d2a", name:"黃思齊", title:"醫師", bio:"專長：兒童蛀牙預防與塗氟" },
+        { id:"d2b", name:"吳彥廷", title:"醫師", bio:"專長：兒童牙齒矯正評估" }
+      ],
       hours:{ mon:[H("10:00","13:00"),H("15:00","20:00")], tue:[H("10:00","13:00"),H("15:00","20:00")],
         wed:[H("10:00","13:00"),H("15:00","20:00")], thu:[H("10:00","13:00"),H("15:00","20:00")],
         fri:[H("10:00","13:00"),H("15:00","20:00")], sat:[H("10:00","13:00"),H("15:00","20:00")], sun:null }
@@ -779,6 +833,10 @@
       id:"c3", name:"貝殼兒童眼科診所", specs:["eye"], distanceKm:1.4,
       rating:4.7, reviews:154, address:"仁愛路四段 56 號 5 樓", phone:"02-2705-3333",
       note:"兒童近視控制、弱視訓練，備有專用視力檢查儀器。",
+      doctors:[
+        { id:"d3a", name:"許雅筑", title:"醫師", bio:"專長：兒童近視控制與角膜塑形" },
+        { id:"d3b", name:"鄭家豪", title:"醫師", bio:"專長：弱視與斜視訓練" }
+      ],
       hours:{ mon:[H("09:00","17:00")], tue:[H("09:00","17:00")], wed:[H("09:00","17:00")],
         thu:[H("09:00","17:00")], fri:[H("09:00","17:00")], sat:[H("09:00","12:00")], sun:null }
     },
@@ -786,6 +844,10 @@
       id:"c4", name:"康乃馨小兒皮膚科", specs:["derm"], distanceKm:1.8,
       rating:4.6, reviews:98, address:"信義路五段 21 號", phone:"02-2758-4444",
       note:"異位性皮膚炎、濕疹、尿布疹專門門診。",
+      doctors:[
+        { id:"d4a", name:"郭美琪", title:"醫師", bio:"專長：異位性皮膚炎與濕疹照護" },
+        { id:"d4b", name:"蔡宗翰", title:"醫師", bio:"專長：嬰幼兒尿布疹與蕁麻疹" }
+      ],
       hours:{ mon:null, tue:[H("11:00","14:00"),H("15:00","19:00")], wed:[H("11:00","14:00"),H("15:00","19:00")],
         thu:[H("11:00","14:00"),H("15:00","19:00")], fri:[H("11:00","14:00"),H("15:00","19:00")],
         sat:[H("11:00","14:00"),H("15:00","19:00")], sun:null }
@@ -794,6 +856,10 @@
       id:"c5", name:"小晴天兒童復健科診所", specs:["rehab"], distanceKm:2.3,
       rating:4.9, reviews:276, address:"松山路 168 號 3 樓", phone:"02-2760-5555",
       note:"早期療育評估、感覺統合訓練，一對一治療室。",
+      doctors:[
+        { id:"d5a", name:"賴欣妮", title:"醫師", bio:"專長：早期療育評估與感覺統合訓練" },
+        { id:"d5b", name:"江柏毅", title:"醫師", bio:"專長：兒童動作發展與物理治療" }
+      ],
       hours:{ mon:[H("08:00","12:00"),H("14:00","18:00")], tue:[H("08:00","12:00"),H("14:00","18:00")],
         wed:[H("08:00","12:00"),H("14:00","18:00")], thu:[H("08:00","12:00"),H("14:00","18:00")],
         fri:[H("08:00","12:00"),H("14:00","18:00")], sat:[H("08:00","12:00")], sun:null }
@@ -802,6 +868,10 @@
       id:"c6", name:"安心兒科過敏免疫診所", specs:["peds","allergy"], distanceKm:2.6,
       rating:4.8, reviews:189, address:"八德路四段 99 號", phone:"02-2570-6666",
       note:"氣喘、異位性體質長期追蹤，提供夜間門診。",
+      doctors:[
+        { id:"d6a", name:"周芷瑄", title:"醫師", bio:"專長：氣喘與過敏性鼻炎長期照護" },
+        { id:"d6b", name:"謝明軒", title:"醫師", bio:"專長：異位性體質與食物過敏檢測" }
+      ],
       hours:{ mon:[H("09:00","12:00"),H("14:00","18:00"),H("19:00","21:00")],
         tue:[H("09:00","12:00"),H("14:00","18:00"),H("19:00","21:00")],
         wed:[H("09:00","12:00"),H("14:00","18:00"),H("19:00","21:00")],
@@ -813,6 +883,10 @@
       id:"c7", name:"好日子小兒科診所", specs:["peds"], distanceKm:3.4,
       rating:4.5, reviews:87, address:"民生東路三段 30 號", phone:"02-2712-7777",
       note:"社區型家庭診所，看診步調從容不趕時間。",
+      doctors:[
+        { id:"d7a", name:"潘怡君", title:"醫師", bio:"專長：一般兒科門診與親子衛教" },
+        { id:"d7b", name:"徐子軒", title:"醫師", bio:"專長：兒童腸胃與飲食調理" }
+      ],
       hours:{ mon:[H("09:00","12:00"),H("14:00","17:00")], tue:[H("09:00","12:00")],
         wed:[H("09:00","12:00"),H("14:00","17:00")], thu:[H("09:00","12:00")],
         fri:[H("09:00","12:00"),H("14:00","17:00")], sat:[H("09:00","12:00")], sun:null }
@@ -821,6 +895,10 @@
       id:"c8", name:"童心圓兒童牙醫診所", specs:["dent"], distanceKm:4.2,
       rating:4.7, reviews:133, address:"南京東路五段 188 號", phone:"02-2748-8888",
       note:"連鎖兒童牙科，全台據點可跨診所調閱病歷。",
+      doctors:[
+        { id:"d8a", name:"洪雨薇", title:"醫師", bio:"專長：兒童全身麻醉牙科治療" },
+        { id:"d8b", name:"藍振宇", title:"醫師", bio:"專長：兒童牙齒外傷急診處理" }
+      ],
       hours:{ mon:[H("09:00","12:00"),H("14:00","18:00")], tue:[H("09:00","12:00"),H("14:00","18:00")],
         wed:[H("09:00","12:00"),H("14:00","18:00")], thu:[H("09:00","12:00"),H("14:00","18:00")],
         fri:[H("09:00","12:00"),H("14:00","18:00")], sat:[H("09:00","12:00"),H("14:00","18:00")],
@@ -829,7 +907,7 @@
   ];
 
   var SCREEN_COUNT = 5;
-  var state = { screen:0, filter:"all", clinicId:null, dateIdx:0, slot:null, bookings:[] };
+  var state = { screen:0, filter:"all", clinicId:null, doctorId:null, dateIdx:0, slot:null, bookings:[] };
   var bookingSeq = 1;
 
   function icon(id, cls){ return '<svg class="'+(cls||'')+'" width="20" height="20"><use href="#'+id+'"/></svg>'; }
@@ -898,6 +976,8 @@
     document.querySelectorAll("[data-clinic]").forEach(function(btn){
       btn.addEventListener("click", function(){
         state.clinicId = btn.getAttribute("data-clinic");
+        var c0 = findClinic();
+        state.doctorId = c0.doctors[0].id;
         state.dateIdx = 0; state.slot = null;
         renderDetail();
         goTo(1);
@@ -941,10 +1021,33 @@
         '<div class="info-row">'+icon("i-phone")+'<span>'+c.phone+'</span></div>' +
         '<div class="info-row">'+icon("i-pin")+'<span class="lbl" style="width:auto;color:var(--text-muted)">距離約 <b style="color:var(--accent-strong)">'+c.distanceKm.toFixed(1)+' 公里</b>（依模擬定位計算）</span></div>' +
       '</div>' +
+      '<div class="section-label">選擇看診醫師</div>' +
+      '<div class="doctor-list">' + c.doctors.map(function(doc){
+        var selected = doc.id === state.doctorId;
+        return (
+          '<button class="doctor-card" data-doctor="'+doc.id+'" aria-pressed="'+selected+'">' +
+            '<span class="doctor-avatar">'+doc.name.charAt(0)+'</span>' +
+            '<span class="doctor-info"><b>'+doc.name+' '+doc.title+'</b><span class="doctor-bio">'+doc.bio+'</span></span>' +
+            '<span class="doctor-radio"></span>' +
+          '</button>'
+        );
+      }).join("") + '</div>' +
       '<div class="section-label">診所簡介</div>' +
       '<div class="info-card"><p style="margin:0;font-size:13.5px;line-height:1.7;color:var(--text)">'+c.note+'</p></div>' +
       '<div class="section-label">營業時間</div>' +
       '<div class="info-card"><table class="hours-table">'+rows+'</table></div>';
+
+    document.querySelectorAll("[data-doctor]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        state.doctorId = btn.getAttribute("data-doctor");
+        renderDetail();
+      });
+    });
+  }
+
+  function findDoctor(c){
+    c = c || findClinic();
+    return c.doctors.filter(function(d){ return d.id === state.doctorId; })[0] || c.doctors[0];
   }
 
   // ---- booking screen ----
@@ -995,8 +1098,9 @@
   function renderBooking(){
     var c = findClinic();
     if(!c) return;
+    var doc = findDoctor(c);
     document.getElementById("booking-clinic-name").innerHTML =
-      icon(SPECIALTIES[c.specs[0]].icon,'') + ' <span style="margin-left:4px">'+c.name+'</span>';
+      icon(SPECIALTIES[c.specs[0]].icon,'') + ' <span style="margin-left:4px">'+c.name+' · '+doc.name+' '+doc.title+'</span>';
 
     var daysHtml = DAYS.map(function(d, idx){
       var pressed = idx === state.dateIdx;
@@ -1047,9 +1151,11 @@
 
   function renderConfirm(){
     var c = findClinic();
+    var doc = findDoctor(c);
     var d = DAYS[state.dateIdx];
     document.getElementById("confirm-card").innerHTML =
       '<div class="crow"><span>診所</span><span>'+c.name+'</span></div>' +
+      '<div class="crow"><span>看診醫師</span><span>'+doc.name+' '+doc.title+'</span></div>' +
       '<div class="crow"><span>科別</span><span>'+specTags(c).join("、")+'</span></div>' +
       '<div class="crow"><span>日期</span><span>'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+dayLabel(d,state.dateIdx)+'）</span></div>' +
       '<div class="crow"><span>時段</span><span>'+state.slot+'</span></div>' +
@@ -1059,10 +1165,12 @@
   // ---- my bookings ----
   function addBooking(){
     var c = findClinic();
+    var doc = findDoctor(c);
     var d = DAYS[state.dateIdx];
     state.bookings.unshift({
       id: "b" + (bookingSeq++),
       clinicName: c.name,
+      doctorName: doc.name + " " + doc.title,
       specs: specTags(c).join("、"),
       iconKey: SPECIALTIES[c.specs[0]].icon,
       dateText: (d.getMonth()+1)+"月"+d.getDate()+"日（"+dayLabel(d,state.dateIdx)+"）",
@@ -1099,7 +1207,7 @@
             '<div class="cicon">'+icon(b.iconKey)+'</div>' +
             '<div>' +
               '<div class="bi-name">'+b.clinicName+'</div>' +
-              '<div class="bi-spec">'+b.specs+'</div>' +
+              '<div class="bi-spec">'+b.doctorName+' · '+b.specs+'</div>' +
             '</div>' +
             '<span class="bi-status '+(cancelled?'cancelled':'upcoming')+'">'+(cancelled?'已取消':'即將到來')+'</span>' +
           '</div>' +
