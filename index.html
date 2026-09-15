@@ -464,6 +464,8 @@
     font-weight:700;
     cursor:pointer;
     box-shadow:0 8px 20px var(--shadow);
+    text-decoration:none;
+    box-sizing:border-box;
   }
   .cta:hover{ background:var(--accent-strong); }
   .cta.ghost{
@@ -628,7 +630,7 @@
   .bi-meta{ display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--text); margin-bottom:12px; }
   .bi-meta span.muted{ color:var(--text-muted); }
   .bi-actions{ display:flex; gap:8px; }
-  .bi-actions button{
+  .bi-actions button, .bi-actions a{
     flex:1;
     padding:9px 0;
     border-radius:11px;
@@ -638,8 +640,12 @@
     border:1px solid var(--border);
     background:var(--surface-alt);
     color:var(--closed);
+    text-align:center;
+    text-decoration:none;
+    box-sizing:border-box;
   }
   .bi-actions button.undo{ background:var(--accent-soft); color:var(--accent-strong); border-color:var(--accent-soft); }
+  .bi-actions a.cal-link{ background:var(--accent-soft); color:var(--accent-strong); border-color:var(--accent-soft); }
   .mybookings-empty{
     text-align:center;
     padding:48px 12px;
@@ -767,7 +773,7 @@
             <div class="confirm-card" id="confirm-card"></div>
             <div class="confirm-actions">
               <button class="cta" id="btn-view-bookings">查看我的預約</button>
-              <button class="cta ghost" id="btn-add-cal">加入行事曆提醒</button>
+              <a class="cta ghost" id="btn-add-cal" href="#" target="_blank" rel="noopener">加入 Google 日曆</a>
               <button class="cta ghost" data-nav="0" id="btn-done">返回診所列表</button>
             </div>
           </div>
@@ -1093,6 +1099,25 @@
 
   function dateKey(d){ return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
 
+  // ---- Google Calendar link ----
+  function pad2(n){ return (n<10?"0":"")+n; }
+  function gcalStamp(d, hh, mm){
+    return d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate())+"T"+pad2(hh)+pad2(mm)+"00";
+  }
+  function buildGCalUrl(title, d, slot, details, location){
+    var parts = slot.split(":");
+    var hh = +parts[0], mm = +parts[1];
+    var endHH = hh, endMM = mm + 30;
+    if(endMM >= 60){ endMM -= 60; endHH += 1; }
+    var start = gcalStamp(d, hh, mm);
+    var end = gcalStamp(d, endHH, endMM);
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      "&text=" + encodeURIComponent(title) +
+      "&dates=" + start + "/" + end +
+      "&details=" + encodeURIComponent(details || "") +
+      "&location=" + encodeURIComponent(location || "");
+  }
+
   var DAYS = nextDays(7);
 
   function renderBooking(){
@@ -1160,6 +1185,11 @@
       '<div class="crow"><span>日期</span><span>'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+dayLabel(d,state.dateIdx)+'）</span></div>' +
       '<div class="crow"><span>時段</span><span>'+state.slot+'</span></div>' +
       '<div class="crow"><span>地址</span><span>'+c.address+'</span></div>';
+
+    var gcalTitle = c.name + ' 門診預約 - ' + doc.name + ' ' + doc.title;
+    var gcalDetails = '看診醫師：'+doc.name+' '+doc.title+'\n科別：'+specTags(c).join('、')+
+      (c.phone ? '\n診所電話：'+c.phone : '') + '\n由 Grow Mate AI 預約';
+    document.getElementById("btn-add-cal").href = buildGCalUrl(gcalTitle, d, state.slot, gcalDetails, c.address);
   }
 
   // ---- my bookings ----
@@ -1174,8 +1204,10 @@
       specs: specTags(c).join("、"),
       iconKey: SPECIALTIES[c.specs[0]].icon,
       dateText: (d.getMonth()+1)+"月"+d.getDate()+"日（"+dayLabel(d,state.dateIdx)+"）",
+      dateObj: new Date(d.getFullYear(), d.getMonth(), d.getDate()),
       slot: state.slot,
       address: c.address,
+      phone: c.phone,
       status: "upcoming"
     });
     updateBookingBadge();
@@ -1218,7 +1250,12 @@
           '<div class="bi-actions">' +
             (cancelled
               ? '<button class="undo" data-action="undo">復原預約</button>'
-              : '<button data-action="cancel">取消預約</button>') +
+              : ('<a class="cal-link" href="'+buildGCalUrl(
+                    b.clinicName + ' 門診預約 - ' + b.doctorName, b.dateObj, b.slot,
+                    '看診醫師：'+b.doctorName+'\n科別：'+b.specs+(b.phone?'\n診所電話：'+b.phone:'')+'\n由 Grow Mate AI 預約',
+                    b.address
+                  )+'" target="_blank" rel="noopener">加入 Google 日曆</a>' +
+                 '<button data-action="cancel">取消預約</button>')) +
           '</div>' +
         '</div>'
       );
@@ -1286,11 +1323,6 @@
     renderConfirm();
     addBooking();
     goTo(3);
-  });
-  document.getElementById("btn-add-cal").addEventListener("click", function(){
-    var btn = document.getElementById("btn-add-cal");
-    btn.textContent = "已加入行事曆 ✓";
-    setTimeout(function(){ btn.textContent = "加入行事曆提醒"; }, 2200);
   });
   document.getElementById("btn-view-bookings").addEventListener("click", function(){
     renderMyBookings();
